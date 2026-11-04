@@ -2,21 +2,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/verify/:id",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/verify/(.*)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/verify",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/verify/:id", "destination": "/index.html" },
+    { "source": "/verify/(.*)", "destination": "/index.html" },
+    { "source": "/verify", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
