@@ -2908,6 +2908,15 @@ async function loadDocumentFromUrlParams() {
 
 // Convert image URL to Base64 or fallback URL so html2canvas renders 100% of logos without CORS issues
 async function resolveAssetUrl(fileName) {
+    // अगर फ़ाइल logo.svg है, तो CORS और 404 से बचने के लिए इसे डायरेक्ट इनलाइन SVG डेटा यूआरएल (Base64) दे देते हैं
+    if (fileName === 'logo.svg') {
+        const mcdSvgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#213480" stroke-width="6"/>
+            <text x="50" y="55" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#213480" text-anchor="middle">MCD</text>
+        </svg>`;
+        return 'data:image/svg+xml;base64,' + btoa(mcdSvgString);
+    }
+
     const primaryUrl = `https://prints-orcin.vercel.app/images/${fileName}`;
     const fallbackUrl = `${window.location.origin}/images/${fileName}`;
     
