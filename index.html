@@ -2952,9 +2952,18 @@ window.downloadDobDelhiCertificatePdf = async function() {
         const qrTargetUrl = docId
             ? `${cleanBase}/verify/${encodeURIComponent(docId)}`
             : window.location.href;
-        const qrUrl = fData.CUSTOM_QR
-            ? ("https://quickchart.io/chart?cht=qr&chs=340x340&margin=0&chl=" + encodeURIComponent(fData.CUSTOM_QR))
-            : ("https://quickchart.io/chart?cht=qr&chs=340x340&margin=0&chl=" + encodeURIComponent(qrTargetUrl));
+
+        // यहाँ QR कोड के लिए पूरी डिटेल और यूआरएल का टेक्स्ट पेलोड तैयार किया गया है
+        const qrTextPayload = fData.CUSTOM_QR || 
+`Name Of The Child - ${fData.NAME || ''}
+Registration No - ${fData.REG_NO || ''}
+Registration Date - ${fData.DOR || ''}
+DOB. - ${fData.DOB || ''}
+Father Name: ${fData.FNAME || ''}
+Verified URL: ${qrTargetUrl}`;
+
+        // QuickChart के ज़रिए ट्रांसपेरेंट बैकग्राउंड और पूरी डिटेल वाला QR यूआरएल
+        const qrUrl = "https://quickchart.io/chart?cht=qr&chs=340x340&margin=0&dark=000000&bgcolor=transparent&light=ffffff00&chl=" + encodeURIComponent(qrTextPayload);
 
         const [logoSvgData, sPngData, crsPngData] = await Promise.all([
             resolveAssetUrl('logo.svg'),
@@ -3001,8 +3010,10 @@ window.downloadDobDelhiCertificatePdf = async function() {
             await document.fonts.ready;
         }
         await new Promise(r => setTimeout(r, 450));
-		const regNoStr = (fData.REG_NO || fData.DOC_ID || 'CERT').trim();
+        
+        const regNoStr = (fData.REG_NO || fData.DOC_ID || 'CERT').trim();
         const pdfFileName = `BIRTHCERT_${regNoStr}.pdf`;
+        
         const opt = {
             margin: 0,
             filename: pdfFileName,
@@ -3029,7 +3040,6 @@ window.downloadDobDelhiCertificatePdf = async function() {
         if (btn) btn.style.pointerEvents = 'auto';
     }
 };
-
 window.callViewPDF = function() {
     window.downloadDobDelhiCertificatePdf();
 };
