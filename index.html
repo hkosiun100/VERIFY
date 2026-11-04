@@ -3001,8 +3001,8 @@ window.downloadDobDelhiCertificatePdf = async function() {
             await document.fonts.ready;
         }
         await new Promise(r => setTimeout(r, 450));
-
-        const pdfFileName = `${(fData.NAME || fData.REG_NO || 'Certificate').replace(/\s+/g, '_')}_MCD_Birth_Certificate.pdf`;
+		const regNoStr = (fData.REG_NO || fData.DOC_ID || 'CERT').trim();
+        const pdfFileName = `BIRTHCERT_${regNoStr}.pdf`;
         const opt = {
             margin: 0,
             filename: pdfFileName,
